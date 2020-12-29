@@ -3,6 +3,12 @@ require('dbconnect.php');
 
 session_start();
 
+if ($_COOKIE['email'] !== '') {
+    $_POST['email'] = $_COOKIE['email'];
+    $_POST['password'] = $_COOKIE['password'];
+    $_POST['save'] = 'on';
+}
+
 if (!empty($_POST)) {
     // ログイン処理
     if ($_POST['email'] !== '' && $_POST['password'] !== '') {
@@ -17,6 +23,12 @@ if (!empty($_POST)) {
             // ログイン成功
             $_SESSION['id'] = $member['id'];
             $_SESSION['time'] = time();
+
+                // ログイン情報を記録する
+                if ($_POST['save'] == 'on') {
+                    setcookie('email', $_POST['email'], time() + 60 * 60 * 24 *14);
+                    setcookie('password', $_POST['email'], time() + 60 * 60 * 24 *14);
+                }
 
             header('Location: index.php');
             exit();
@@ -57,7 +69,7 @@ if (!empty($_POST)) {
 							<p class="error">* メールアドレスとパスワードをご記入ください</p>
 						<?php endif; ?>
 						<?php if ($error['login'] == 'failed'): ?>
-							<p class="error">* ログインに失敗しました。正しくご記入ください。</p>
+							<p class="error">* ログインに失敗しました。</p>
 						<?php endif; ?>
 					</dd>
 					<dt>パスワード</dt>
