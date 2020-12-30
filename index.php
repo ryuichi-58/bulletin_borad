@@ -15,7 +15,22 @@ if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
     exit();
 }
 
-
+// 投稿を記録する
+if (!empty($_POST)) {
+    if ($_POST['message'] != '') {
+        if (!isset($_REQUEST['res'])) {
+            $_POST['reply_post_id'] = 0;
+        }
+        $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, reply_post_id=?, created=NOW()');
+        $message->execute(array(
+            $member['id'],
+            $_POST['message'],
+            $_POST['reply_post_id']
+        ));
+        header('Location: index.php');
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,16 +45,22 @@ if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
 </head>
 
 <body>
-	<form action="" method="post">
+<div id="wrap">
+  <div id="head">
+    <h1>ひとこと掲示板</h1>
+  </div>
+  <div id="content">
+    <form action="" method="post">
         <dl>
             <dt><?php echo htmlspecialchars($member['name'], ENT_QUOTES); ?>さん、メッセージをどうぞ</dt>
-            <dd>
-                <textarea name="message" cols="50" rows="5"></textarea>
-            </dd>
+        <dd>
+        <textarea name="message" cols="50" rows="5"></textarea>
+        </dd>
         </dl>
         <div>
-            <input type="submit" value="投稿する">
+            <input type="submit" value="投稿する" />
         </div>
     </form>
+</div>
 </body>
 </html>
