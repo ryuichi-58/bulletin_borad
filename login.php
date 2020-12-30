@@ -3,13 +3,14 @@ session_start();
 require('dbconnect.php');
 
 
-// if ($_COOKIE['email'] != '') {
-//     $_POST['email'] = $_COOKIE['email'];
-//     $_POST['password'] = $_COOKIE['password'];
-//     $_POST['save'] = 'on';
-// }
+if ($_COOKIE['email'] !== '') {
+    $_POST['email'] = $_COOKIE['email'];
+    $_POST['password'] = $_COOKIE['password'];
+    $_POST['save'] = 'on';
+}
 
 if (!empty($_POST)) {
+    $email = $_POST['email'];
     // ログイン処理
     if ($_POST['email'] !== '' && $_POST['password'] !== '') {
         $login = $db->prepare('SELECT * FROM members WHERE email=? AND password=?');
@@ -17,7 +18,7 @@ if (!empty($_POST)) {
             $_POST['email'],
             sha1($_POST['password'])
         ));
-    $member = $login->fetch();
+        $member = $login->fetch();
 
         if ($member) {
             // ログイン成功
@@ -25,11 +26,10 @@ if (!empty($_POST)) {
             $_SESSION['time'] = time();
 
                 // ログイン情報を記録する
-                if ($_POST['save'] == 'on') {
+                if ($_POST['save'] === 'on') {
                     setcookie('email', $_POST['email'], time()+ 60 * 60 * 24 * 14);
                     setcookie('password', $_POST['password'], time() + 60 * 60 * 24 * 14);
                 }
-
             header('Location: index.php');
             exit();
         } else {
