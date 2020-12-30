@@ -1,13 +1,13 @@
 <?php
+session_start();
 require('dbconnect.php');
 
-session_start();
 
-if ($_COOKIE['email'] !== '') {
-    $_POST['email'] = $_COOKIE['email'];
-    $_POST['password'] = $_COOKIE['password'];
-    $_POST['save'] = 'on';
-}
+// if ($_COOKIE['email'] != '') {
+//     $_POST['email'] = $_COOKIE['email'];
+//     $_POST['password'] = $_COOKIE['password'];
+//     $_POST['save'] = 'on';
+// }
 
 if (!empty($_POST)) {
     // ログイン処理
@@ -26,8 +26,8 @@ if (!empty($_POST)) {
 
                 // ログイン情報を記録する
                 if ($_POST['save'] == 'on') {
-                    setcookie('email', $_POST['email'], time() + 60 * 60 * 24 *14);
-                    setcookie('password', $_POST['email'], time() + 60 * 60 * 24 *14);
+                    setcookie('email', $_POST['email'], time()+ 60 * 60 * 24 * 14);
+                    setcookie('password', $_POST['password'], time() + 60 * 60 * 24 * 14);
                 }
 
             header('Location: index.php');
