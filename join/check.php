@@ -9,7 +9,7 @@ if (!isset($_SESSION['join'])) {
 
 if (!empty($_POST)) {
 		$statement = $db->prepare('INSERT INTO members SET name=?, email=?, password=?, picture=?, created=NOW()');
-		echo $statement->execute(array(
+		echo $ret = $statement->execute(array(
 			$_SESSION['join']['name'],
 			$_SESSION['join']['email'],
 			sha1($_SESSION['join']['password']),
@@ -48,7 +48,7 @@ if (!empty($_POST)) {
 				</dd>
 		<dt>メールアドレス</dt>
 		<dd>
-		<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>
+		<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>ƒ
 				</dd>
 		<dt>パスワード</dt>
 		<dd>
