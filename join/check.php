@@ -8,17 +8,17 @@ if (!isset($_SESSION['join'])) {
 }
 
 if (!empty($_POST)) {
-		$statement = $db->prepare('INSERT INTO members SET name=?, email=?, password=?, picture=?, created=NOW()');
-		echo $ret = $statement->execute(array(
-			$_SESSION['join']['name'],
-			$_SESSION['join']['email'],
-			sha1($_SESSION['join']['password']),
-			$_SESSION['join']['image']
-		));
-		unset($_SESSION['join']);
+	$statement = $db->prepare('INSERT INTO members SET name=?, email=?, password=?, picture=?, created=NOW()');
+	echo $ret = $statement->execute(array(
+		$_SESSION['join']['name'],
+		$_SESSION['join']['email'],
+		sha1($_SESSION['join']['password']),
+		$_SESSION['join']['image']
+	));
+	unset($_SESSION['join']);
 
-		header('Location: thanks.php');
-		exit();
+	header('Location: thanks.php');
+	exit();
 }
 ?>
 <!DOCTYPE html>
@@ -45,11 +45,11 @@ if (!empty($_POST)) {
 		<dt>ニックネーム</dt>
 		<dd>
 		<?php print(htmlspecialchars($_SESSION['join']['name'], ENT_QUOTES)); ?>
-				</dd>
+		</dd>
 		<dt>メールアドレス</dt>
 		<dd>
-		<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>ƒ
-				</dd>
+		<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>
+		</dd>
 		<dt>パスワード</dt>
 		<dd>
 		【表示されません】
