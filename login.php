@@ -41,46 +41,43 @@ if (!empty($_POST)) {
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>ログインする</title>
+<title>SIGN IN</title>
 </head>
-
 <body>
-	<div id="wrap">
-		<div id="head">
-			<h1>ログイン</h1>
-		</div>
-		<div id="content">
-			<form action="" method="post">
-				<dl>
-					<dt>メールアドレス</dt>
-					<dd>
-						<input type="text" name="email" size="35" maxlength="255" value="<?php echo htmlspecialchars($_POST['email']); ?>"/>
-						<?php if ($error['login'] == 'blank'): ?>
-						<p class="error">* メールアドレスとパスワードをご記入ください</p>
-						<?php endif; ?>
-						<?php if ($error['login'] == 'failed'): ?>
-						<p class="error">* ログインに失敗しました。</p>
-                        <?php endif; ?>
-					</dd>
-					<dt>パスワード</dt>
-					<dd>
-						<input type="password" name="password" size="35" maxlength="255" value="<?php echo htmlspecialchars($_POST['password']); ?>" />
-					</dd>
-					<dt>ログイン情報の記録</dt>
-					<dd>
-                        <input id="save" type="checkbox" name="save" value="on">
-                        <label for="save">次回からは自動的にログインする</label>
-					</dd>
-				</dl>
-				<div><input type="submit" value="ログインする" /></div>
-			</form>
-		</div>
-        <p>&raquo;<a href="join/">入会手続きはこちらから</a></p>
-	</div>
+	<div class="form_wrapper">
+		<h1>Member Login</h1>
+        <form action="" method="post">
+		    <div class="form_item">
+                <label for="email"></label>
+                <input type="email" name="email" required="required" placeholder="Email Address" value="<?php echo htmlspecialchars($_POST['email']); ?>"/></input>
+                <?php if ($error['login'] == 'blank'): ?>
+                <p class="error">* メールアドレスが正しくありません</p>
+                <?php endif; ?>
+                <?php if ($error['login'] == 'failed'): ?>
+                <p class="error">* ログインに失敗しました。</p>
+                <?php endif; ?>
+            </div>
+            <div class="form_item">
+                <label for="password"></label>
+                <input type="password" name="password" required="required" placeholder="Password" value="<?php echo htmlspecialchars($_POST['password']); ?>" /></input>
+            </div>
+            <?php if ($error['password'] == 'blank'): ?>
+            <p class="error">* パスワードが正しくありません</p>
+            <?php endif; ?>
+            <div class="button_panel">
+                <input type="submit" class="button" title="Sign In" value="login"></input>
+            </div>
+            <div class="form_footer">
+                <input id="save" type="checkbox" name="save" value="on">
+                <label for="save"><a>ログインを保存</a></label>
+                <p class="new_created"><a href="join/">新規アカウントを作成</a></p>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

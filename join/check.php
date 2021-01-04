@@ -27,44 +27,45 @@ if (!empty($_POST)) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>会員登録</title>
+	<title>確認画面</title>
 
 	<link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-<div id="wrap">
-<div id="head">
-<h1>会員登録</h1>
-</div>
-
-<div id="content">
-<p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
-<form action="" method="post">
+	<div class="confirmation_wrapper">
+		<p class="announce">以下の内容で間違いなければ、「登録する」を押してください。</p>
+		<form action="" method="post">
 	<input type="hidden" name="action" value="submit" />
-	<dl>
-		<dt>ニックネーム</dt>
-		<dd>
+	<dl class="border">
+		<dt class="sub_title">ネーム</dt>
+		<dd class="input_value">
 		<?php print(htmlspecialchars($_SESSION['join']['name'], ENT_QUOTES)); ?>
 		</dd>
-		<dt>メールアドレス</dt>
-		<dd>
+	</dl>
+	<dl class="border">
+		<dt class="sub_title">メールアドレス</dt>
+		<dd class="input_value">
 		<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>
 		</dd>
-		<dt>パスワード</dt>
-		<dd>
+	</dl>
+	<dl class="border">
+		<dt class="sub_title">パスワード</dt>
+		<dd class="input_value">
 		【表示されません】
 		</dd>
-		<dt>写真など</dt>
-		<dd>
+	</dl>
+	<dl class="border">
+		<dt class="sub_title">アイコン用画像</dt>
+		<dd class="input_value">
 		<?php if ($_SESSION['join']['image'] !== ''): ?>
 		<img src="../member_picture/<?php print(htmlspecialchars($_SESSION['join']['image'], ENT_QUOTES)); ?>">
 		<?php endif; ?>
 		</dd>
 	</dl>
-	<div><a href="index.php?action=rewrite">&laquo;&nbsp;書き直す</a> | <input type="submit" value="登録する" /></div>
+	<div class="rewrite_button">
+		<a href="index.php?action=rewrite" class="return_button">戻る</a>
+		<input type="submit" class="button" value="登録する" />
+	</div>
 </form>
-</div>
-
-</div>
 </body>
 </html>

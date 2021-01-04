@@ -54,59 +54,54 @@ if ($_REQUEST['action'] == 'rewrite' && isset($_SESSION['join'])) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>会員登録</title>
+	<title>メンバー登録</title>
 
 	<link rel="stylesheet" href="../style.css" />
 </head>
 <body>
-<div id="wrap">
-<div id="head">
-<h1>会員登録</h1>
-</div>
-
-<div id="content">
-<p>次のフォームに必要事項をご記入ください。</p>
-<form action="" method="post" enctype="multipart/form-data">
-	<dl>
-		<dt>ニックネーム<span class="required">必須</span></dt>
-		<dd>
-        	<input type="text" name="name" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['name'], ENT_QUOTES)); ?>" />
-			<?php if ($error['name'] === 'blank'): ?>
-			<p class="error">* ニックネームを入力してください</p>
-			<?php endif; ?>
-		</dd>
-		<dt>メールアドレス<span class="required">必須</span></dt>
-		<dd>
-        	<input type="text" name="email" size="35" maxlength="255" value="<?php print (htmlspecialchars($_POST['email'], ENT_QUOTES)); ?>" />
-			<?php if ($error['email'] === 'blank'): ?>
-			<p class="error">* メールアドレスを入力してください</p>
-			<?php endif; ?>
-			<?php if ($error['email'] === 'duplicate'): ?>
-			<p class="error">* 指定されたメールアドレスは、既に登録されています</p>
-			<?php endif; ?>
-		<dt>パスワード<span class="required">必須</span></dt>
-		<dd>
-        	<input type="password" name="password" size="10" maxlength="20" value="<?php print (htmlspecialchars($_POST['password'], ENT_QUOTES)); ?>" />
-			<?php if ($error['password'] === 'length'): ?>
-			<p class="error">* パスワードは4文字以上で入力してください</p>
-			<?php endif; ?>
-			<?php if ($error['password'] === 'blank'): ?>
-			<p class="error">* パスワードを入力してください</p>
-			<?php endif; ?>
-        </dd>
-		<dt>写真など</dt>
-		<dd>
-        	<input type="file" name="image" size="35" value="test"  />
-			<?php if ($error['image'] === 'type'): ?>
-			<p class="error">* 写真などは「.gif」「.jpg」「.png」の画像を指定してください</p>
-			<?php endif; ?>
-			<?php if (!empty($error)): ?>
-			<p class="error">* 恐れ入りますが、もう一度画像をご指定ください</p>
-			<?php endif; ?>
-        </dd>
-	</dl>
-	<div><input type="submit" value="入力内容を確認する" /></div>
-</form>
-</div>
+	<div class="form_wrapper">
+		<h1>新規メンバー登録</h1>
+		<form action="" method="post" enctype="multipart/form-data">
+		<h2>以下の項目をご記入の上、「次へ」を押して下さい。</h2>
+			<dl class="form_item">
+				<dd>
+					<input type="text" name="name" maxlength="50" required="required" placeholder="Name" value="<?php print (htmlspecialchars($_POST['name'], ENT_QUOTES)); ?>" />
+					<?php if ($error['name'] === 'blank'): ?>
+					<p class="error">* 名前を入力して下さい</p>
+					<?php endif; ?>
+				</dd>
+				<dd>
+					<input type="text" name="email" maxlength="50" required="required" placeholder="Email Address" value="<?php print (htmlspecialchars($_POST['email'], ENT_QUOTES)); ?>" />
+					<?php if ($error['email'] === 'blank'): ?>
+					<p class="error">* メールアドレスを入力して下さい</p>
+					<?php endif; ?>
+					<?php if ($error['email'] === 'duplicate'): ?>
+					<p class="error">* 指定されたメールアドレスは、既に登録されています</p>
+					<?php endif; ?>
+				<dd>
+					<input type="password" name="password" maxlength="20" required="required" placeholder="Pass Word" value="<?php print (htmlspecialchars($_POST['password'], ENT_QUOTES)); ?>" />
+					<?php if ($error['password'] === 'length'): ?>
+					<p class="error">* パスワードは4文字以上で入力して下さい</p>
+					<?php endif; ?>
+					<?php if ($error['password'] === 'blank'): ?>
+					<p class="error">* パスワードを入力して下さい</p>
+					<?php endif; ?>
+				</dd>
+			</dl>
+				<dd>
+					<p class="icon">アイコン用画像&#12296;任意&#12297;</p>
+					<input type="file" class="file_button" name="image" size="35" value="test"  />
+					<?php if ($error['image'] === 'type'): ?>
+					<p class="error">* 「.gif」「.jpg」「.png」の画像を指定して下さい</p>
+					<?php endif; ?>
+					<?php if (!empty($error)): ?>
+					<p class="error">* もう一度画像を指定して下さい</p>
+					<?php endif; ?>
+				</dd>
+				<div class="button_panel">
+					<input type="submit" class="next_button" value="次へ" />
+				</div>
+		</form>
+	</div>
 </body>
 </html>
