@@ -70,7 +70,7 @@ if (!empty($_POST)) {
             <p class="error">* パスワードが正しくありません</p>
             <?php endif; ?>
             <div class="button_panel">
-                <input type="submit" class="button" title="Sign In" value="login"></input>
+                <input type="submit" class="button" title="login" value="login"></input>
             </div>
             <div class="form_footer">
                 <input id="save" type="checkbox" name="save" value="on">

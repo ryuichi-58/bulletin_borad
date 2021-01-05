@@ -74,82 +74,104 @@ function makeLink($value) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/250c1a3838.js" crossorigin="anonymous"></script>
 	<title>ひとこと掲示板</title>
 
 	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<div id="wrap">
-  <div id="head">
-    <h1>ひとこと掲示板</h1>
-  </div>
-  <div id="content">
-    <div style="text-align: right"><a href="logout.php">ログアウト</a></div>
-    <form action="" method="post">
-        <dl>
-            <dt><?php echo h($member['name']); ?>さん、メッセージをどうぞ</dt>
-        <dd>
-        <textarea name="message" cols="50" rows="5"><?php echo h($message); ?></textarea>
-        <input type="hidden" name="reply_post_id" value="<?php echo h($_REQUEST['res']); ?>" />
-        </dd>
-        </dl>
-        <div>
-            <input type="submit" value="投稿する" />
-        </div>
-    </form>
-<?php
-foreach ($posts as $post):
-?>
-    <div class="msg">
-        <img src="member_picture/<?php echo h($post['picture']); ?>" width="48" height="48" alt="<?php echo h($post['name']);?>" />
-        <p><?php echo makeLink(h($post['message'])); ?><span class="name">(<?php echo h($post['name']) ?>)</span>[<a href="index.php?res=<?php echo h($post['id']); ?>">Re</a>]</p>
-        <p class="day"><a href="view.php?id=<?php echo h($post['id']); ?>"><?php echo h($post['created']); ?></a>
-    <?php
-    if ($post['reply_post_id'] > 0):
-    ?>
-            <a href="view.php?id=<?php echo h($post['reply_post_id']); ?>">返信元のメッセージ</a>
-    <?php
-    endif;
-    ?>
-    <?php
-    if ($_SESSION['id'] == $post['member_id']):
-    ?>
-        [<a href="delete.php?id=<?php echo h($post['id']); ?>" style="color:#F33;">削除</a>]
-    <?php
-    endif;
-    ?>
-    </p>
+<div class="wrap">
+    <div class="writing_title">
+      <h1>ひとこと掲示板</h1>
     </div>
-<?php
-endforeach;
-?>
-
-<ul class="paging">
-<?php
-if ($page > 1) {
-?>
-<li><a href="index.php?page=<?php print($page - 1); ?>">前のページへ</a></li>
-<?php
-} else {
-?>
-<li>前のページへ</li>
-<?php
-}
-?>
-<?php
-if ($page < $maxPage) {
-?>
-<li><a href="index.php?page=<?php print($page + 1); ?>">次のページへ</a></li>
-<?php
-} else {
-?>
-<li>次のページへ</li>
-<?php
-}
-?>
-</ul>
+    <div class="content">
+        <div class="content_wrapper">
+            <div class="logout_button" style="text-align: right"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> ログアウト</a></div>
+            <form class="content_form" action="" method="post">
+                <dl>
+                <dt class="user_name"><i class="far fa-edit"></i> <?php echo h($member['name']); ?>さんの投稿：</dt>
+                <dd>
+                <textarea name="message" cols="80" rows="5"><?php echo h($message); ?></textarea>
+                <input type="hidden" name="reply_post_id" value="<?php echo h($_REQUEST['res']); ?>" />
+                </dd>
+                </dl>
+                <div class="write_button">
+                <input type="submit" class="button" value="書き込む" />
+                </div>
+            </form>
+            <?php
+            foreach ($posts as $post):
+            ?>
+        </div>
+    <div>
+    <div class="msg">
+      <section class="msg_wrapper">
+          <div class="msg_container">
+            <p><img src="member_picture/<?php echo h($post['picture']); ?>" width="40" height="40" alt="<?php echo h($post['name']);?>" /></p>
+          <article class="user">
+            <span class="name"><?php echo h($post['name']) ?></span>
+          </article>
+          <article class="day">
+            <div class="created">
+              <?php echo h($post['created']); ?>
+            </div>
+            <div class="icon_reply">
+              <p class="meg_reply"><a href="index.php?res=<?php echo h($post['id']); ?>"><i class="fas fa-reply"></i> 返信</a></p>
+            </div>
+            <div class="icon_trash">
+              <?php
+              if ($post['reply_post_id'] > 0):
+              ?>
+              <a href="view.php?id=<?php echo h($post['reply_post_id']); ?>">返信元のメッセージ</a>
+              <?php
+              endif;
+              ?>
+              <?php
+              if ($_SESSION['id'] == $post['member_id']):
+              ?>
+              <p class="msg_delete"><a href="delete.php?id=<?php echo h($post['id']); ?>"><i class="far fa-trash-alt"></i> 削除</a></p>
+              <?php
+              endif;
+              ?>
+            </div>
+          </article>
+        </div>
+        <article class="post">
+        <?php echo makeLink(h($post['message'])); ?>
+        </article>
+      </section>
+      <div class="space"></div>
+    </div>
+  </div>
+  <?php
+  endforeach;
+  ?>
+  <ul class="paging">
+  <?php
+  if ($page > 1) {
+  ?>
+  <li><a href="index.php?page=<?php print($page - 1); ?>"><i class="far fa-caret-square-left"></i> Back</a></li>
+  <?php
+  } else {
+  ?>
+  <li class="link_off"><i class="far fa-caret-square-left"></i> Back</li>
+  <?php
+  }
+  ?>
+  <?php
+  if ($page < $maxPage) {
+  ?>
+  <li><a href="index.php?page=<?php print($page + 1); ?>">Front <i class="far fa-caret-square-right"></i></a></li>
+  <?php
+  } else {
+  ?>
+  <li class="link_off">Front <i class="far fa-caret-square-right"></i></li>
+  <?php
+  }
+  ?>
+  </ul>
 </div>
 </body>
 </html>

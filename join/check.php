@@ -62,7 +62,7 @@ if (!empty($_POST)) {
 		<?php endif; ?>
 		</dd>
 	</dl>
-	<div class="rewrite_button">
+	<div class="verification">
 		<a href="index.php?action=rewrite" class="return_button">戻る</a>
 		<input type="submit" class="button" value="登録する" />
 	</div>
