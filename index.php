@@ -22,8 +22,8 @@ if (!empty($_POST)) {
             $_POST['reply_post_id'] = 0;
         }
         $message = $db->prepare('INSERT INTO posts
-                                    SET member_id=?,
-                                    message=?, reply_post_id=?, created=NOW()');
+                                SET member_id=?,
+                                message=?, reply_post_id=?, created=NOW()');
         $message->execute(array(
             $member['id'],
             $_POST['message'],
@@ -48,18 +48,18 @@ $maxPage = ceil($cnt['cnt'] / 5);
 $page = min($page, $maxPage);
 $start = ($page - 1) * 5;
 $posts = $db->prepare('SELECT m.name, m.picture, p.*
-                        FROM members m, posts p
-                        WHERE m.id=p.member_id
-                        ORDER BY p.created DESC LIMIT ?, 5');
+                    FROM members m, posts p
+                    WHERE m.id=p.member_id
+                    ORDER BY p.created DESC LIMIT ?, 5');
 $posts->bindParam(1, $start, PDO::PARAM_INT);
 $posts->execute();
 
 // 返信の場合
 if (isset($_REQUEST['res'])) {
     $response = $db->prepare('SELECT m.name, m.picture, p.*
-                                FROM members m.posts p
-                                WHERE m.id=p.member_id
-                                AND p.id=? ORDER BY p.created DESC');
+                            FROM members m.posts p
+                            WHERE m.id=p.member_id
+                            AND p.id=? ORDER BY p.created DESC');
     $response->execute(array($_REQUEST['res']));
 
     $table = $response->fetch();
@@ -74,60 +74,10 @@ function makeLink($value) {
     return mb_ereg_replace("(https?)(://[[:alnum]\+\$\;\?\.%,!#~*/:@&=_-]+)", '<a href="\1\2">\1\2</a>', $value);
 }
 
-// メッセージ別のいいねされた件数をDBから取り出す
-$posts = $db->prepare('SELECT m.name, m.picture, p.*,
-                        COUNT(l.post_id) AS like_cnt
-                        FROM members m, posts p
-                        LEFT JOIN likes l
-                        ON p.id=l.post_id
-                        WHERE m.id=p.member_id
-                        GROUP BY l.post_id
-                        ORDER BY p.created DESC LIMIT ?, 5');
-$posts->bindParam(1, $start, PDO::PARAM_INT);
-$posts->execute();
+if (!empty($_POST)) {
 
-// いいねしたユーザー
-if (isset($_REQUEST['like'])) {
-    $user = $db->prepare('SELECT member_id FROM posts WHERE id=?');
-    $user->execute(array($_REQUEST['like']));
-    $liked_person = $user->fetch();
-
-    // 投稿者がいいねしていないか確認
-    if ($_SESSION['id'] != $liked_person['member_id']) {
-    // 過去にいいねしていないか確認
-        $pushed = $db->prepare('SELECT COUNT(*) AS cnt FROM likes WHERE post_id=? AND member_id=?');
-        $pushed->execute(array(
-            $_REQUEST['like'],
-            $_SESSION['id']
-        ));
-        $like_cnt = $pushed->fetch();
-        // いいねの挿入と削除
-        if ($like_cnt['cnt'] < 1) {
-            $like_push = $db->prepare('INSERT INTO likes SET post_id=?, member_id=?, created=NOW()');
-            $like_push->execute(array(
-                $_REQUEST['like'],
-                $_SESSION['id']
-            ));
-            header("Location: index.php?page={$page}");
-            exit();
-        } else {
-            $like_delete = $db->prepare('DELETE FROM likes WHERE post_id=? AND member_id=?');
-            $like_delete->execute(array(
-                $_REQUEST['like'],
-                $login_user
-            ));
-            header("Location: index.php?page={$page}");
-            exit();
-        }
-    }
-}
-$like = $db->prepare('SELECT post_id FROM likes WHERE member_id=?');
-$like->execute(array($_SESSION['id']));
-while ($like_record = $like->fetch()) {
-    $my_like[] = $like_record;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -188,17 +138,8 @@ while ($like_record = $like->fetch()) {
                         }
                     }
                     ?>
-                    <?php if ($like_cnt < 1): ?>
                         <div>
                         <p><a href="index.php?like=<?php echo h($post['id']); ?>&page=<?php echo h($page); ?>"><i class="far fa-heart"></i></a></p>
-                        </div>
-                    <?php else : ?>
-                        <div class="likes_button">
-                        <p><a href="index.php?like=<?php echo h($post['id']); ?>&page=<?php echo h($page); ?>"></a></p>
-                        </div>
-                    <?php endif; ?>
-                        <div>
-                        <span><?php echo h($post['like_cnt']); ?></span>
                         </div>
                     <div class="icon_reply">
                         <p class="meg_reply"><a href="index.php?res=<?php echo h($post['id']); ?>"><i class="fas fa-reply"></i> 返信</a></p>

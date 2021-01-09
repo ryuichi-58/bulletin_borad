@@ -5,3 +5,4 @@ try {
     echo 'DB接続エラー：' . $e->getMessage();
 }
 ?>
+

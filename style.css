@@ -82,7 +82,7 @@ form {
 }
 
 .button:hover {
-  background: #0e1846;
+  background: #fa3838;
 }
 
 .form_footer {
@@ -116,7 +116,7 @@ h2 {
 .return_button,
 .login_button,
 .write_button .button {
-  background: #365896;
+  background: #f8213a;
   border: none;
   color: #fff;
   cursor: pointer;
